@@ -1,0 +1,16 @@
+Files crawler
+1. Crawl folder
+2. Get data from all the files
+    [name, suffix, size [KB], writable, executable, hidden]
+3. Create an array list of file objects containing the data
+4. Each file object should implement Filterable and Comperable?
+
+
+Filterable interface
+1. Returns true if the file fits the filter  -- filter() method
+2. There should be a filter factory
+
+
+Comperable interface
+1. Should use some kind of comperator. Check the tirgul
+2. There should be a comperator factory
