@@ -14,3 +14,14 @@ Filterable interface
 Comperable interface
 1. Should use some kind of comperator. Check the tirgul
 2. There should be a comperator factory
+
+
+
+
+Create a command block iterator that returns a string array
+LIST
+command
+ORDER
+command
+
+if there's no command, insert a null.
