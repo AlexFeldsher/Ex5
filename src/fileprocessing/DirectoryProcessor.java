@@ -1,5 +1,7 @@
 package fileprocessing;
 
+import fileprocessing.comperators.FileComparatorFactory;
+import fileprocessing.comperators.FileNameComparator;
 import fileprocessing.exceptions.BadSubSectionNameException;
 import fileprocessing.exceptions.TypeIError;
 import fileprocessing.filefilters.AllFileFilter;
@@ -23,6 +25,7 @@ public class DirectoryProcessor {
             LineNumberReader commandLineReader = new LineNumberReader(commandFileReader);
             String line = null;
             FileFilter fileFilter = null;
+            Comparator<File> fileComparator;
             while ((line = commandLineReader.readLine()) != null) {
                 // Create filtered file list
                 if (line.equals("FILTER")) {
@@ -39,8 +42,19 @@ public class DirectoryProcessor {
                     line = commandLineReader.readLine();
                     if (line.equals("ORDER")) {
                         line = commandLineReader.readLine();
+                        try {
+                            fileComparator = FileComparatorFactory.select(line);
+                        } catch (TypeIError e) {
+                            System.err.println("Warning in line " + commandLineReader.getLineNumber());
+                            fileComparator = new FileNameComparator();
+                        }
+                        filesList.sort(fileComparator);
                     } else {
                         throw new BadSubSectionNameException();
+                    }
+                    for (File f : filesList) {
+                        System.out.println(f.getName());
+                        filesList = new ArrayList<>();
                     }
                 } else {
                     System.err.println("Warning in line " + commandLineReader.getLineNumber());

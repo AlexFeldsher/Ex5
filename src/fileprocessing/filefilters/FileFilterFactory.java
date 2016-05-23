@@ -87,6 +87,6 @@ public class FileFilterFactory {
         } else if (filter.equals("all")) {
             return new AllFileFilter();
         }
-        return null;
+        throw new TypeIError();
     }
 }
