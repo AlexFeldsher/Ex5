@@ -30,6 +30,8 @@ public class DirectoryProcessor {
                 // Create filtered file list
                 if (line.equals("FILTER")) {
                     line = commandLineReader.readLine();
+                    String[] splitLine = line.split("#");
+                    Boolean not = splitLine[splitLine.length - 1].equals("NOT") ? true : false;
                     try {
                         fileFilter = FileFilterFactory.select(line);
                     } catch (TypeIError e) {
@@ -38,6 +40,15 @@ public class DirectoryProcessor {
                     }
                     for (File f : sourceDir.listFiles(fileFilter)) {
                         filesList.add(f);
+                    }
+                    if (not) {
+                        ArrayList<File> notFileList = new ArrayList<>();
+                        for (File f : sourceDir.listFiles()) {
+                            if (!filesList.contains(f)) {
+                                notFileList.add(f);
+                            }
+                        }
+                        filesList = notFileList;
                     }
                     line = commandLineReader.readLine();
                     if (line.equals("ORDER")) {
