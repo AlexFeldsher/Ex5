@@ -1,5 +1,8 @@
 package fileprocessing;
 
+import fileprocessing.exceptions.TypeIError;
+import fileprocessing.filefilters.*;
+
 import java.io.FileFilter;
 
 public class FileFilterFactory {

@@ -1,4 +1,4 @@
-package fileprocessing;
+package fileprocessing.comperators;
 
 import java.io.File;
 import java.util.Comparator;

@@ -1,5 +1,10 @@
 package fileprocessing;
 
+import fileprocessing.exceptions.BadSubSectionNameException;
+import fileprocessing.exceptions.TypeIError;
+import fileprocessing.filefilters.AllFileFilter;
+import fileprocessing.filefilters.WritableFileFilter;
+
 import java.io.*;
 import java.util.*;
 
