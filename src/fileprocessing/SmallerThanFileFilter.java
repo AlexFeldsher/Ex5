@@ -11,7 +11,6 @@ public class SmallerThanFileFilter implements FileFilter {
 
     /**
      * Smaller than filter constructor
-     *
      * @param value the value that should be filtered against
      */
     public SmallerThanFileFilter(double value) {
