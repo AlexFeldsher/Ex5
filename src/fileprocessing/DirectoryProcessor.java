@@ -5,6 +5,7 @@ import java.util.*;
 
 
 public class DirectoryProcessor {
+
     public static void main(String[] args) {
         // holds all the files in the source dir
         ArrayList<File> filesList = new ArrayList<>();
@@ -22,4 +23,6 @@ public class DirectoryProcessor {
             System.out.println(f.getName());
         }
     }
+
+
 }
