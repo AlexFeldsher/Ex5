@@ -18,8 +18,8 @@ public class DirectoryProcessor {
         }
 
         File sourceDir = new File(sourceDirPath);
-        for (File f : sourceDir.listFiles()) {
-            System.out.println(f.getPath());
+        for (File f : sourceDir.listFiles(new WritableFileFilter())) {
+            System.out.println(f.getName());
         }
     }
 }
