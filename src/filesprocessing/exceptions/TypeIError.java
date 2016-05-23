@@ -1,4 +1,4 @@
-package fileprocessing.exceptions;
+package filesprocessing.exceptions;
 
 /**
  * Type I Errors - Warnings

@@ -1,4 +1,4 @@
-package fileprocessing.filefilters;
+package filesprocessing.filefilters;
 
 import java.io.File;
 import java.io.FileFilter;

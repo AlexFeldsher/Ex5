@@ -1,8 +1,8 @@
-package fileprocessing.Tests;
+package filesprocessing.Tests;
 
-import fileprocessing.filefilters.AllFileFilter;
-import fileprocessing.filefilters.FileFilterFactory;
-import fileprocessing.exceptions.TypeIError;
+import filesprocessing.filefilters.AllFileFilter;
+import filesprocessing.filefilters.FileFilterFactory;
+import filesprocessing.exceptions.TypeIError;
 
 import java.io.*;
 import java.util.ArrayList;

@@ -1,11 +1,11 @@
-package fileprocessing;
+package filesprocessing;
 
-import fileprocessing.comperators.FileComparatorFactory;
-import fileprocessing.comperators.FileNameComparator;
-import fileprocessing.exceptions.BadSubSectionNameException;
-import fileprocessing.exceptions.TypeIError;
-import fileprocessing.filefilters.AllFileFilter;
-import fileprocessing.filefilters.FileFilterFactory;
+import filesprocessing.comperators.FileComparatorFactory;
+import filesprocessing.comperators.FileNameComparator;
+import filesprocessing.exceptions.BadSubSectionNameException;
+import filesprocessing.exceptions.TypeIError;
+import filesprocessing.filefilters.AllFileFilter;
+import filesprocessing.filefilters.FileFilterFactory;
 
 import java.io.*;
 import java.util.*;

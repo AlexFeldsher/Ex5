@@ -1,7 +1,6 @@
-package fileprocessing.filefilters;
+package filesprocessing.filefilters;
 
-import fileprocessing.exceptions.TypeIError;
-import fileprocessing.filefilters.*;
+import filesprocessing.exceptions.TypeIError;
 
 import java.io.FileFilter;
 

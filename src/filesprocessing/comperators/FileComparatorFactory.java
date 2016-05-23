@@ -1,6 +1,6 @@
-package fileprocessing.comperators;
+package filesprocessing.comperators;
 
-import fileprocessing.exceptions.TypeIError;
+import filesprocessing.exceptions.TypeIError;
 
 import java.io.File;
 import java.util.Comparator;
