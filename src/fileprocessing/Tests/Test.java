@@ -1,7 +1,7 @@
 package fileprocessing.Tests;
 
 import fileprocessing.filefilters.AllFileFilter;
-import fileprocessing.FileFilterFactory;
+import fileprocessing.filefilters.FileFilterFactory;
 import fileprocessing.exceptions.TypeIError;
 
 import java.io.*;

@@ -3,7 +3,7 @@ package fileprocessing;
 import fileprocessing.exceptions.BadSubSectionNameException;
 import fileprocessing.exceptions.TypeIError;
 import fileprocessing.filefilters.AllFileFilter;
-import fileprocessing.filefilters.WritableFileFilter;
+import fileprocessing.filefilters.FileFilterFactory;
 
 import java.io.*;
 import java.util.*;
@@ -52,12 +52,6 @@ public class DirectoryProcessor {
             // TODO: handle exception
         } catch (BadSubSectionNameException e) {
             // TODO: handle exception
-        }
-
-
-        File sourceDir = new File(sourceDirPath);
-        for (File f : sourceDir.listFiles(new WritableFileFilter())) {
-            System.out.println(f.getName());
         }
     }
 }
