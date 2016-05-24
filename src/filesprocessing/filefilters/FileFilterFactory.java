@@ -1,5 +1,6 @@
 package filesprocessing.filefilters;
 
+import filesprocessing.exceptions.BadCommandFileFormat;
 import filesprocessing.exceptions.TypeIError;
 
 import java.io.FileFilter;
@@ -7,7 +8,7 @@ import java.io.FileFilter;
 public class FileFilterFactory {
     private static final String COMMAND_VALUE_DELIMITER = "#";
 
-    public static FileFilter select(String commandString) throws TypeIError {
+    public static FileFilter select(String commandString) throws TypeIError, BadCommandFileFormat {
         String[] commandArray = commandString.split(COMMAND_VALUE_DELIMITER);
         String filter = commandArray[0];
         if (filter.equals("greater_than")) {
@@ -96,6 +97,6 @@ public class FileFilterFactory {
         } else if (filter.equals("all")) {
             return new AllFileFilter();
         }
-        throw new TypeIError();
+        throw new BadCommandFileFormat();
     }
 }
