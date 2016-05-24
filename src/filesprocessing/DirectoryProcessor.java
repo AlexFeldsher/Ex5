@@ -117,7 +117,9 @@ public class DirectoryProcessor implements Iterable<String[]> {
 
             // filter files
             for (File f : sourceDir.listFiles(fileFilter)) {
-                fileList.add(f);
+                if (f.isFile()) {
+                    fileList.add(f);
+                }
             }
             if (notFlag) {
                 ArrayList<File> notFileList = new ArrayList<>();
@@ -128,7 +130,7 @@ public class DirectoryProcessor implements Iterable<String[]> {
                             addFlag = false;
                         }
                     }
-                    if (addFlag) {
+                    if (addFlag && f.isFile()) {
                         notFileList.add(f);
                     }
                 }
