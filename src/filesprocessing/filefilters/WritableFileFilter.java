@@ -32,9 +32,9 @@ public class WritableFileFilter implements FileFilter {
 
     public boolean accept(File file) {
         if (filterState.equals(WRITABLE)) {
-            return file.canWrite();
+            return (file.canWrite() && file.isFile());
         } else {
-            return !file.canWrite();
+            return (!file.canWrite() && file.isFile());
         }
     }
 }

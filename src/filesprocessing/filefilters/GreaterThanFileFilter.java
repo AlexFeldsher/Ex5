@@ -22,7 +22,7 @@ public class GreaterThanFileFilter implements FileFilter {
 
     public boolean accept(File file) {
         if (file.length() > GREATER_THAN_VALUE) {
-            return true;
+            return file.isFile();
         }
         return false;
     }

@@ -21,7 +21,7 @@ public class PrefixFileFilter implements FileFilter {
 
     public boolean accept(File file) {
         if (file.getName().startsWith(PREFIX)) {
-            return true;
+            return file.isFile();
         }
         return false;
     }

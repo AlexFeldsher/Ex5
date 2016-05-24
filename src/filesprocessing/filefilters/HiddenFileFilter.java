@@ -32,9 +32,9 @@ public class HiddenFileFilter implements FileFilter {
 
     public boolean accept(File file) {
         if (filterState.equals(HIDDEN)) {
-            return file.isHidden();
+            return (file.isHidden() && file.isFile());
         } else {
-            return !file.isHidden();
+            return (!file.isHidden() && file.isFile());
         }
     }
 }

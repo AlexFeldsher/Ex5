@@ -32,9 +32,9 @@ public class ExecutableFileFilter implements FileFilter {
 
     public boolean accept(File file) {
         if (filterState.equals(WRITABLE)) {
-            return file.canExecute();
+            return (file.canExecute() && file.isFile());
         } else {
-            return !file.canExecute();
+            return (!file.canExecute() && file.isFile());
         }
     }
 }

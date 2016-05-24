@@ -20,7 +20,7 @@ public class ContainsFileFilter implements FileFilter {
 
     public boolean accept(File file) {
         if (file.getName().contains(CONTAINS_STRING)) {
-            return true;
+            return file.isFile();
         }
         return false;
     }

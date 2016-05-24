@@ -21,7 +21,7 @@ public class SuffixFileFilter implements FileFilter {
 
     public boolean accept(File file) {
         if (file.getName().endsWith(SUFFIX)) {
-            return true;
+            return file.isFile();
         }
         return false;
     }

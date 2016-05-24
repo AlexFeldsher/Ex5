@@ -20,7 +20,7 @@ public class FileNameFileFilter implements FileFilter {
 
     public boolean accept(File file) {
         if (file.getName().equals(FILE_NAME)) {
-            return true;
+            return file.isFile();
         }
         return false;
     }

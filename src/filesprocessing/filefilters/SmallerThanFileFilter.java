@@ -20,7 +20,7 @@ public class SmallerThanFileFilter implements FileFilter {
 
     public boolean accept(File file) {
         if (file.length() < SMALLER_THAN_VALUE) {
-            return true;
+            return file.isFile();
         }
         return false;
     }

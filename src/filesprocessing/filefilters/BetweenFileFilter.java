@@ -27,7 +27,7 @@ public class BetweenFileFilter implements FileFilter {
 
     public boolean accept(File file) {
         if (file.length() >= LOWER_LIMIT && file.length() <= UPPER_LIMIT) {
-            return true;
+            return file.isFile();
         }
         return false;
     }
