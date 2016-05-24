@@ -79,10 +79,16 @@ public class FileFilterFactory {
             }
             return new SuffixFileFilter(suffix);
         } else if (filter.equals("writable")) {
-            if (commandArray[1] != null && !commandArray[1].equals("NOT")) {
+            if (commandArray[1] == null) {
                 throw new TypeIError();
             }
-            return new WritableFileFilter();
+            if (!commandArray[1].equals("NO") || !commandArray[1].equals("YES")) {
+                throw new TypeIError();
+            }
+            if (commandArray[2] != null && !commandArray[2].equals("NOT")) {
+                throw new TypeIError();
+            }
+            return new WritableFileFilter(commandArray[1]);
         } else if (filter.equals("executable")) {
             if (commandArray[1] != null && !commandArray[1].equals("NOT")) {
                 throw new TypeIError();
