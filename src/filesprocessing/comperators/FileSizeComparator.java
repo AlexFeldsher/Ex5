@@ -13,6 +13,6 @@ public class FileSizeComparator implements Comparator<File> {
         if (fileSize1 > fileSize2) {
             return 1;
         }
-        return 0;
+        return file1.getName().compareTo(file2.getName());
     }
 }
