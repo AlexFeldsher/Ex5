@@ -1,6 +1,7 @@
 package filesprocessing.filefilters;
 
 import filesprocessing.exceptions.BadCommandFileFormat;
+import filesprocessing.exceptions.BadFilterState;
 import filesprocessing.exceptions.TypeIError;
 
 import java.io.FileFilter;
@@ -82,23 +83,38 @@ public class FileFilterFactory {
             if (commandArray[1] == null) {
                 throw new TypeIError();
             }
-            if (!commandArray[1].equals("NO") || !commandArray[1].equals("YES")) {
-                throw new TypeIError();
-            }
             if (commandArray[2] != null && !commandArray[2].equals("NOT")) {
                 throw new TypeIError();
             }
-            return new WritableFileFilter(commandArray[1]);
+            try {
+                return new WritableFileFilter(commandArray[1]);
+            } catch (BadFilterState e) {
+                throw new TypeIError();
+            }
         } else if (filter.equals("executable")) {
+            if (commandArray[1] == null) {
+                throw new TypeIError();
+            }
             if (commandArray[1] != null && !commandArray[1].equals("NOT")) {
                 throw new TypeIError();
             }
-            return new ExecutableFileFilter();
+            try {
+                return new ExecutableFileFilter(commandArray[1]);
+            } catch (BadFilterState e) {
+                throw new TypeIError();
+            }
         } else if (filter.equals("hidden")) {
+            if (commandArray[1] == null) {
+                throw new TypeIError();
+            }
             if (commandArray[1] != null && !commandArray[1].equals("NOT")) {
                 throw new TypeIError();
             }
-            return new HiddenFileFilter();
+            try {
+                return new HiddenFileFilter(commandArray[1]);
+            } catch (BadFilterState e) {
+                throw new TypeIError();
+            }
         } else if (filter.equals("all")) {
             return new AllFileFilter();
         }
