@@ -3,99 +3,171 @@ package filesprocessing;
 import filesprocessing.comperators.FileComparatorFactory;
 import filesprocessing.comperators.FileNameComparator;
 import filesprocessing.exceptions.BadCommandFileFormat;
-import filesprocessing.exceptions.BadSubSectionNameException;
 import filesprocessing.exceptions.TypeIError;
 import filesprocessing.filefilters.AllFileFilter;
 import filesprocessing.filefilters.FileFilterFactory;
 
 import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
-public class DirectoryProcessor {
+public class DirectoryProcessor implements Iterable<String[]> {
+
+    private FileReader fileReader;
 
     public static void main(String[] args) {
-        // holds all the files in the source dir
-        ArrayList<File> filesList = new ArrayList<>();
-        DirectoryProcessor dp = new DirectoryProcessor();
-
         String sourceDirPath = args[0];
-        String commandFilePath = args[1];
+        String filterFilePath = args[1];
+
+        File temp = new File(filterFilePath);
+        String filterName = temp.getName();
+
+        File sourceDir = new File(sourceDirPath);
+        DirectoryProcessor dp2 = new DirectoryProcessor(filterFilePath);
         System.out.println("***********************");
-        System.out.println(sourceDirPath + "\n" + commandFilePath);
+        System.out.println(sourceDirPath + "\n" + filterFilePath);
         System.out.println("-----------------------");
-        try {
-            File sourceDir = new File(sourceDirPath);
-            FileReader commandFileReader = new FileReader(commandFilePath);
-            LineNumberReader commandLineReader = new LineNumberReader(commandFileReader);
-            String line = null;
-            FileFilter fileFilter = null;
-            Comparator<File> fileComparator;
-            while ((line = commandLineReader.readLine()) != null) {
-                // Create filtered file list
-                if (line.equals("FILTER")) {
-                    line = commandLineReader.readLine();
-                    String[] splitLine = line.split("#");
-                    Boolean not = splitLine[splitLine.length - 1].equals("NOT") ? true : false;
-                    try {
-                        fileFilter = FileFilterFactory.select(line);
-                    } catch (TypeIError e) {
-                        System.err.println("Warning in line " + commandLineReader.getLineNumber());
-                        fileFilter = new AllFileFilter();
-                    } catch (BadCommandFileFormat e) {
-                        return;
-                    }
-                    for (File f : sourceDir.listFiles(fileFilter)) {
-                        filesList.add(f);
-                    }
-                    if (not) {
-                        ArrayList<File> notFileList = new ArrayList<>();
-                        for (File f : sourceDir.listFiles()) {
-                            if (!filesList.contains(f)) {
-                                notFileList.add(f);
-                            }
+        int lineCounter = 0;
+        FileFilter fileFilter;
+        Comparator<File> fileComparator;
+        for (String[] commandBlock : dp2) {
+            ArrayList<File> fileList = new ArrayList<>();
+            boolean notFlag = false;
+            boolean reverseFlag = false;
+
+            // handle line 1
+            lineCounter++;
+            if (commandBlock[0] == null) {
+                System.err.print(filterName + " ERROR: Bad format of Commands File\n");
+                return;
+            }
+            if (!commandBlock[0].equals("FILTER")) {
+                System.err.print(filterName + " ERROR: Bad subsection name\n");
+                return;
+            }
+
+            // handle line 2
+            lineCounter++;
+            try {
+                String[] splitFilterCommand = commandBlock[1].split("#");
+                notFlag = splitFilterCommand[splitFilterCommand.length - 1].equals("NOT") ? true : false;
+                fileFilter = FileFilterFactory.select(commandBlock[1]);
+            } catch (TypeIError e) {
+                System.err.print(filterName + " Warning in line " + lineCounter + "\n");
+                fileFilter = new AllFileFilter();
+            } catch (BadCommandFileFormat e) {
+                System.err.print(filterName + " ERROR: Bad format of Commands File\n");
+                return;
+            } catch (NullPointerException e) {
+                fileFilter = new AllFileFilter();
+            }
+
+            // handle line 3
+            lineCounter++;
+            if (commandBlock[2] == null) {
+                System.err.print(filterName + " ERROR: Bad format of Commands File\n");
+                return;
+            }
+            if (!commandBlock[2].equals("ORDER")) {
+                System.err.print(filterName + " ERROR: Bad subsection name\n");
+                return;
+            }
+
+            // handle line 4
+            lineCounter++;
+            try {
+                String[] splitOrderCommand = commandBlock[3].split("#");
+                reverseFlag = splitOrderCommand[splitOrderCommand.length - 1].equals("REVERSE") ? true : false;
+                fileComparator = FileComparatorFactory.select(splitOrderCommand[0]);
+            } catch (NullPointerException e) {
+                System.err.print(filterName + " Warning in line " + lineCounter + "\n");
+                fileComparator = new FileNameComparator();
+            } catch (TypeIError e) {
+                System.err.print(filterName + " Warning in line " + lineCounter + "\n");
+                fileComparator = new FileNameComparator();
+            }
+
+            // filter files
+            for (File f : sourceDir.listFiles(fileFilter)) {
+                fileList.add(f);
+            }
+            if (notFlag) {
+                ArrayList<File> notFileList = new ArrayList<>();
+                for (File f : sourceDir.listFiles()) {
+                    boolean addFlag = true;
+                    for (File f2 : fileList) {
+                        if (f.getName().equals(f2.getName())) {
+                            addFlag = false;
                         }
-                        filesList = notFileList;
                     }
-                    line = commandLineReader.readLine();
-                    if (line == null) {
-                        throw new BadSubSectionNameException();
+                    if (addFlag) {
+                        notFileList.add(f);
                     }
-                    if (line.equals("ORDER")) {
-                        line = commandLineReader.readLine();
-                        if (line == null) {
-                            System.err.println("Warning in line " + commandLineReader.getLineNumber());
-                            continue;
-                        }
-                        splitLine = line.split("#");
-                        Boolean reverse = splitLine[splitLine.length - 1].equals("NOT") ? true : false;
-                        try {
-                            fileComparator = FileComparatorFactory.select(splitLine[0]);
-                        } catch (TypeIError e) {
-                            System.err.println("Warning in line " + commandLineReader.getLineNumber());
-                            fileComparator = new FileNameComparator();
-                        }
-                        if (reverse) {
-                            filesList.sort(fileComparator.reversed());
-                        } else {
-                            filesList.sort(fileComparator);
-                        }
-                    } else {
-                        throw new BadSubSectionNameException();
-                    }
-                    for (File f : filesList) {
-                        System.out.println(f.getName());
-                        filesList = new ArrayList<>();
-                    }
+                }
+                fileList = notFileList;
+            }
+
+            // order files
+            if (fileList.size() > 1) {
+                if (reverseFlag) {
+                    fileList.sort(fileComparator.reversed());
                 } else {
-                    System.err.println("Warning in line " + commandLineReader.getLineNumber());
+                    fileList.sort(fileComparator);
                 }
             }
+
+            // print final list
+            for (File f : fileList) {
+                System.out.println(f.getName());
+            }
+        }
+    }
+
+    public DirectoryProcessor(String filterFilePath) {
+        try {
+            fileReader = new FileReader(filterFilePath);
         } catch (FileNotFoundException e) {
-            // TODO: handle file not found
-        } catch (IOException e) {
-            // TODO: handle exception
-        } catch (BadSubSectionNameException e) {
             // TODO: handle exception
         }
+    }
+
+    public Iterator<String[]> iterator() {
+        LineNumberReader lineNumberReader = new LineNumberReader(fileReader);
+
+        class FilterBlockIterator implements Iterator<String[]> {
+            private String[] block;
+
+            public boolean hasNext() {
+                block = new String[4];
+                // Generate the next block
+                for (int i = 0; i < 4; i++) {
+                    try {
+                        String line = lineNumberReader.readLine();
+                        if (line != null) {
+                            block[i] = line;
+                        }
+                    } catch (IOException e) {
+                        // TODO: handle exception
+                    }
+                }
+                // return true if a new block was generated
+                return (block[0] == null) ? false : true;
+            }
+
+            public String[] next() throws NoSuchElementException {
+                if (block[0] != null) {
+                    return block;
+                }
+                throw new NoSuchElementException();
+            }
+
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        }
+
+        return new FilterBlockIterator();
     }
 }

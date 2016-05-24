@@ -124,6 +124,6 @@ public class FileFilterFactory {
         } else if (filter.equals("all")) {
             return new AllFileFilter();
         }
-        throw new BadCommandFileFormat();
+        throw new TypeIError();
     }
 }

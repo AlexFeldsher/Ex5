@@ -1,13 +1,8 @@
 package filesprocessing.Tests;
 
-import filesprocessing.DP2;
 import filesprocessing.DirectoryProcessor;
-import filesprocessing.filefilters.AllFileFilter;
-import filesprocessing.filefilters.FileFilterFactory;
-import filesprocessing.exceptions.TypeIError;
 
 import java.io.*;
-import java.util.ArrayList;
 
 public class Test {
     public static void main(String[] args) {
@@ -16,11 +11,19 @@ public class Test {
         String advFilterDir = "/home/alex/IdeaProjects/Ex5/advanced_filters";
         String advSourceDir = "/home/alex/IdeaProjects/Ex5/advanced_source_directory";
 
+        // single test
+        String s = basicFilterDir + "/filter031.flt";
+        String[] com = {basicFilterDir, s};
+        DirectoryProcessor.main(com);
+
+
+        System.out.println("=================================");
+        System.out.println("=================================");
         // basic test
         File fltDir = new File(basicFilterDir);
         for (File flt : fltDir.listFiles()) {
             String[] arg = {basicSourceDir, flt.getPath()};
-            DP2.main(arg);
+            DirectoryProcessor.main(arg);
         }
 
     }

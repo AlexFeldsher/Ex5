@@ -5,7 +5,7 @@ import java.util.Comparator;
 
 public class FileTypeComparator implements Comparator<File> {
     /* Constant of the file type extension delimiter */
-    private final String TYPE_DELIMITER = ".";
+    private final String TYPE_DELIMITER = "\\.";
 
     public int compare(File file1, File file2) {
         String[] fullFileName1 = file1.getName().split(TYPE_DELIMITER);
