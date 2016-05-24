@@ -13,6 +13,7 @@ public class FileSizeComparator implements Comparator<File> {
         if (fileSize1 > fileSize2) {
             return 1;
         }
+        // if size is the same then sort lexicographically
         return file1.getName().compareTo(file2.getName());
     }
 }

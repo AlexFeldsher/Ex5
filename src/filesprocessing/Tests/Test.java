@@ -6,8 +6,10 @@ import java.io.*;
 
 public class Test {
     public static void main(String[] args) {
-        String s = "/home/alex/IdeaProjects/Ex5/advanced_filters/filter050.flt";
+        String s = "/home/alex/IdeaProjects/Ex5/advanced_filters/filter054.flt";
+        String basicFilter = "/home/alex/IdeaProjects/Ex5/basic_filters/filter031.flt";
         Test.advTestSingle(s);
+//        Test.basicTestSingle(basicFilter);
     }
 
     public static void advTestSingle(String filter) {
@@ -31,19 +33,10 @@ public class Test {
         }
     }
 
-    public static void basicTest() {
-        String basicFilterDir = "/home/alex/IdeaProjects/Ex5/basic_filters";
+    public static void basicTestSingle(String filter) {
         String basicSourceDir = "/home/alex/IdeaProjects/Ex5/basic_source_directory";
-
         // single test
-        String s = "/home/alex/IdeaProjects/Ex5/basic_filters/filter038.flt";
-        String[] com = {basicSourceDir, s};
+        String[] com = {basicSourceDir, filter};
         DirectoryProcessor.main(com);
-
-
-        System.out.println("=================================");
-        System.out.println("=================================");
-        // basic test
-
     }
 }

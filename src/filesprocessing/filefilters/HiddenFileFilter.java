@@ -14,8 +14,8 @@ public class HiddenFileFilter implements FileFilter {
     private final String filterState;
 
     /* Constants of the filter state */
-    private final String WRITABLE = "YES";
-    private final String NOT_WRITABLE = "NO";
+    private final String HIDDEN = "YES";
+    private final String NOT_HIDDEN = "NO";
 
     /**
      * Hidden filter constructor
@@ -25,13 +25,13 @@ public class HiddenFileFilter implements FileFilter {
      */
     public HiddenFileFilter(String state) throws BadFilterState {
         filterState = state;
-        if (!filterState.equals(WRITABLE) && !filterState.equals(NOT_WRITABLE)) {
+        if (!filterState.equals(HIDDEN) && !filterState.equals(NOT_HIDDEN)) {
             throw new BadFilterState();
         }
     }
 
     public boolean accept(File file) {
-        if (filterState.equals(WRITABLE)) {
+        if (filterState.equals(HIDDEN)) {
             return file.isHidden();
         } else {
             return !file.isHidden();
