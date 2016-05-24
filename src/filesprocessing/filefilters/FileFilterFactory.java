@@ -50,7 +50,6 @@ public class FileFilterFactory {
             String fileName;
             try {
                 fileName = commandArray[1];
-                System.out.println("FILTERFACTORY: filename = " + fileName);
             } catch (IndexOutOfBoundsException e) {
                 throw new TypeIError();
             }

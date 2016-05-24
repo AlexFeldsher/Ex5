@@ -2,6 +2,7 @@ package filesprocessing;
 
 import filesprocessing.comperators.FileComparatorFactory;
 import filesprocessing.comperators.FileNameComparator;
+import filesprocessing.exceptions.BadCommandFileFormat;
 import filesprocessing.exceptions.BadSubSectionNameException;
 import filesprocessing.exceptions.TypeIError;
 import filesprocessing.filefilters.AllFileFilter;
@@ -40,6 +41,8 @@ public class DirectoryProcessor {
                     } catch (TypeIError e) {
                         System.err.println("Warning in line " + commandLineReader.getLineNumber());
                         fileFilter = new AllFileFilter();
+                    } catch (BadCommandFileFormat e) {
+                        return;
                     }
                     for (File f : sourceDir.listFiles(fileFilter)) {
                         filesList.add(f);
