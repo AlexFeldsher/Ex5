@@ -19,6 +19,9 @@ public class DirectoryProcessor {
 
         String sourceDirPath = args[0];
         String commandFilePath = args[1];
+        System.out.println("***********************");
+        System.out.println(sourceDirPath + "\n" + commandFilePath);
+        System.out.println("-----------------------");
         try {
             File sourceDir = new File(sourceDirPath);
             FileReader commandFileReader = new FileReader(commandFilePath);
@@ -51,15 +54,28 @@ public class DirectoryProcessor {
                         filesList = notFileList;
                     }
                     line = commandLineReader.readLine();
+                    if (line == null) {
+                        throw new BadSubSectionNameException();
+                    }
                     if (line.equals("ORDER")) {
                         line = commandLineReader.readLine();
+                        if (line == null) {
+                            System.err.println("Warning in line " + commandLineReader.getLineNumber());
+                            continue;
+                        }
+                        splitLine = line.split("#");
+                        Boolean reverse = splitLine[splitLine.length - 1].equals("NOT") ? true : false;
                         try {
-                            fileComparator = FileComparatorFactory.select(line);
+                            fileComparator = FileComparatorFactory.select(splitLine[0]);
                         } catch (TypeIError e) {
                             System.err.println("Warning in line " + commandLineReader.getLineNumber());
                             fileComparator = new FileNameComparator();
                         }
-                        filesList.sort(fileComparator);
+                        if (reverse) {
+                            filesList.sort(fileComparator.reversed());
+                        } else {
+                            filesList.sort(fileComparator);
+                        }
                     } else {
                         throw new BadSubSectionNameException();
                     }

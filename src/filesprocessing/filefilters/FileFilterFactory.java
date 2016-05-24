@@ -49,6 +49,7 @@ public class FileFilterFactory {
             String fileName;
             try {
                 fileName = commandArray[1];
+                System.out.println("FILTERFACTORY: filename = " + fileName);
             } catch (IndexOutOfBoundsException e) {
                 throw new TypeIError();
             }
@@ -78,10 +79,19 @@ public class FileFilterFactory {
             }
             return new SuffixFileFilter(suffix);
         } else if (filter.equals("writable")) {
+            if (commandArray[1] != null && !commandArray[1].equals("NOT")) {
+                throw new TypeIError();
+            }
             return new WritableFileFilter();
         } else if (filter.equals("executable")) {
+            if (commandArray[1] != null && !commandArray[1].equals("NOT")) {
+                throw new TypeIError();
+            }
             return new ExecutableFileFilter();
         } else if (filter.equals("hidden")) {
+            if (commandArray[1] != null && !commandArray[1].equals("NOT")) {
+                throw new TypeIError();
+            }
             return new HiddenFileFilter();
         } else if (filter.equals("all")) {
             return new AllFileFilter();

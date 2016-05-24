@@ -7,6 +7,9 @@ import java.util.Comparator;
 
 public class FileComparatorFactory {
     public static Comparator<File> select(String order) throws TypeIError {
+        if (order == null) {
+            throw new TypeIError();
+        }
         if (order.equals("abs")) {
             return new FileNameComparator();
         }
