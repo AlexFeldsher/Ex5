@@ -83,8 +83,10 @@ public class FileFilterFactory {
             if (commandArray[1] == null) {
                 throw new TypeIError();
             }
-            if (commandArray[2] != null && !commandArray[2].equals("NOT")) {
-                throw new TypeIError();
+            if (commandArray.length > 2 && commandArray[2] != null) {
+                if (!commandArray[2].equals("NOT")) {
+                    throw new TypeIError();
+                }
             }
             try {
                 return new WritableFileFilter(commandArray[1]);
@@ -95,8 +97,10 @@ public class FileFilterFactory {
             if (commandArray[1] == null) {
                 throw new TypeIError();
             }
-            if (commandArray[1] != null && !commandArray[1].equals("NOT")) {
-                throw new TypeIError();
+            if (commandArray.length > 2 && commandArray[2] != null) {
+                if (!commandArray[2].equals("NOT")) {
+                    throw new TypeIError();
+                }
             }
             try {
                 return new ExecutableFileFilter(commandArray[1]);
@@ -107,8 +111,10 @@ public class FileFilterFactory {
             if (commandArray[1] == null) {
                 throw new TypeIError();
             }
-            if (commandArray[1] != null && !commandArray[1].equals("NOT")) {
-                throw new TypeIError();
+            if (commandArray.length > 2 && commandArray[2] != null) {
+                if (!commandArray[2].equals("NOT")) {
+                    throw new TypeIError();
+                }
             }
             try {
                 return new HiddenFileFilter(commandArray[1]);
