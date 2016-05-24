@@ -12,20 +12,21 @@ public class BetweenFileFilter implements FileFilter {
     private final double LOWER_LIMIT;
     private final double UPPER_LIMIT;
 
+    private final int KILOBYTE = 1024;
+
     /**
      * Constructor for between file filter
      *
-     * @param x lower limit file size
-     * @param y upper limit file size
+     * @param x lower limit file size in KB
+     * @param y upper limit file size in KB
      */
     public BetweenFileFilter(double x, double y) {
-        LOWER_LIMIT = x;
-        UPPER_LIMIT = y;
+        LOWER_LIMIT = x * KILOBYTE;
+        UPPER_LIMIT = y * KILOBYTE;
     }
 
     public boolean accept(File file) {
-        double fileSizeKB = file.length() / 1024;
-        if (fileSizeKB >= LOWER_LIMIT && fileSizeKB <= UPPER_LIMIT) {
+        if (file.length() >= LOWER_LIMIT && file.length() <= UPPER_LIMIT) {
             return true;
         }
         return false;
