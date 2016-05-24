@@ -3,6 +3,7 @@ package filesprocessing;
 import filesprocessing.comperators.FileComparatorFactory;
 import filesprocessing.comperators.FileNameComparator;
 import filesprocessing.exceptions.BadCommandFileFormat;
+import filesprocessing.exceptions.BadSubSectionNameException;
 import filesprocessing.exceptions.TypeIError;
 import filesprocessing.filefilters.AllFileFilter;
 import filesprocessing.filefilters.FileFilterFactory;
@@ -20,19 +21,32 @@ public class DirectoryProcessor implements Iterable<String[]> {
     public static void main(String[] args) {
         String sourceDirPath = args[0];
         String filterFilePath = args[1];
+        DirectoryProcessor dp = new DirectoryProcessor(filterFilePath);
+        // handles invalid subsection names
+        try {
+            if (!dp.validateCommandsFileStructure(filterFilePath)) {
+                System.err.print("ERROR: Bad subsection name\n");
+                return;
+            }
+        } catch (IOException e) {
+            // TODO: handle exception
+        }
 
         File temp = new File(filterFilePath);
         String filterName = temp.getName();
 
         File sourceDir = new File(sourceDirPath);
-        DirectoryProcessor dp2 = new DirectoryProcessor(filterFilePath);
+        ArrayList<File> orderFileslist = new ArrayList<>();
+        /*
         System.out.println("***********************");
         System.out.println(sourceDirPath + "\n" + filterFilePath);
         System.out.println("-----------------------");
+        */
         int lineCounter = 0;
         FileFilter fileFilter;
         Comparator<File> fileComparator;
-        for (String[] commandBlock : dp2) {
+
+        for (String[] commandBlock : dp) {
             ArrayList<File> fileList = new ArrayList<>();
             boolean notFlag = false;
             boolean reverseFlag = false;
@@ -40,11 +54,13 @@ public class DirectoryProcessor implements Iterable<String[]> {
             // handle line 1
             lineCounter++;
             if (commandBlock[0] == null) {
-                System.err.print(filterName + " ERROR: Bad format of Commands File\n");
+                System.err.print("ERROR: Bad format of Commands File\n");
+                System.err.flush();
                 return;
             }
             if (!commandBlock[0].equals("FILTER")) {
-                System.err.print(filterName + " ERROR: Bad subsection name\n");
+                System.err.print("ERROR: Bad subsection name\n");
+                System.err.flush();
                 return;
             }
 
@@ -55,10 +71,12 @@ public class DirectoryProcessor implements Iterable<String[]> {
                 notFlag = splitFilterCommand[splitFilterCommand.length - 1].equals("NOT") ? true : false;
                 fileFilter = FileFilterFactory.select(commandBlock[1]);
             } catch (TypeIError e) {
-                System.err.print(filterName + " Warning in line " + lineCounter + "\n");
+                System.err.print("Warning in line " + lineCounter + "\n");
+                System.err.flush();
                 fileFilter = new AllFileFilter();
             } catch (BadCommandFileFormat e) {
-                System.err.print(filterName + " ERROR: Bad format of Commands File\n");
+                System.err.print("ERROR: Bad format of Commands File\n");
+                System.err.flush();
                 return;
             } catch (NullPointerException e) {
                 fileFilter = new AllFileFilter();
@@ -67,26 +85,34 @@ public class DirectoryProcessor implements Iterable<String[]> {
             // handle line 3
             lineCounter++;
             if (commandBlock[2] == null) {
-                System.err.print(filterName + " ERROR: Bad format of Commands File\n");
+                System.err.print("ERROR: Bad format of Commands File\n");
+                System.err.flush();
                 return;
             }
             if (!commandBlock[2].equals("ORDER")) {
-                System.err.print(filterName + " ERROR: Bad subsection name\n");
+                System.err.print("ERROR: Bad subsection name\n");
+                System.err.flush();
                 return;
             }
 
             // handle line 4
             lineCounter++;
-            try {
-                String[] splitOrderCommand = commandBlock[3].split("#");
-                reverseFlag = splitOrderCommand[splitOrderCommand.length - 1].equals("REVERSE") ? true : false;
-                fileComparator = FileComparatorFactory.select(splitOrderCommand[0]);
-            } catch (NullPointerException e) {
-                System.err.print(filterName + " Warning in line " + lineCounter + "\n");
+            if (commandBlock[3] == null) {
                 fileComparator = new FileNameComparator();
-            } catch (TypeIError e) {
-                System.err.print(filterName + " Warning in line " + lineCounter + "\n");
-                fileComparator = new FileNameComparator();
+            } else {
+                try {
+                    String[] splitOrderCommand = commandBlock[3].split("#");
+                    reverseFlag = splitOrderCommand[splitOrderCommand.length - 1].equals("REVERSE") ? true : false;
+                    fileComparator = FileComparatorFactory.select(splitOrderCommand[0]);
+                } catch (NullPointerException e) {
+                    System.err.print("Warning in line " + lineCounter + "\n");
+                    System.err.flush();
+                    fileComparator = new FileNameComparator();
+                } catch (TypeIError e) {
+                    System.err.print("Warning in line " + lineCounter + "\n");
+                    System.err.flush();
+                    fileComparator = new FileNameComparator();
+                }
             }
 
             // filter files
@@ -118,10 +144,17 @@ public class DirectoryProcessor implements Iterable<String[]> {
                 }
             }
 
+            orderFileslist.addAll(fileList);
             // print final list
+            /*
             for (File f : fileList) {
                 System.out.println(f.getName());
             }
+            */
+        }
+        // print files
+        for (File f : orderFileslist) {
+            System.out.println(f.getName());
         }
     }
 
@@ -131,6 +164,22 @@ public class DirectoryProcessor implements Iterable<String[]> {
         } catch (FileNotFoundException e) {
             // TODO: handle exception
         }
+    }
+
+    public boolean validateCommandsFileStructure(String commandFilePath) throws IOException {
+        DirectoryProcessor dp = new DirectoryProcessor(commandFilePath);
+        for (String[] commandBlock : dp) {
+            if (commandBlock[2] == null) {
+                return false;
+            }
+            if (!commandBlock[0].equals("FILTER")) {
+                return false;
+            }
+            if (!commandBlock[2].equals("ORDER")) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public Iterator<String[]> iterator() {

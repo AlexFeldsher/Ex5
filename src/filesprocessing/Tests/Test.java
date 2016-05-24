@@ -12,8 +12,8 @@ public class Test {
         String advSourceDir = "/home/alex/IdeaProjects/Ex5/advanced_source_directory";
 
         // single test
-        String s = basicFilterDir + "/filter031.flt";
-        String[] com = {basicFilterDir, s};
+        String s = "/home/alex/IdeaProjects/Ex5/basic_filters/filter038.flt";
+        String[] com = {basicSourceDir, s};
         DirectoryProcessor.main(com);
 
 
@@ -25,6 +25,5 @@ public class Test {
             String[] arg = {basicSourceDir, flt.getPath()};
             DirectoryProcessor.main(arg);
         }
-
     }
 }
