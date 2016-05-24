@@ -6,7 +6,7 @@ import java.io.*;
 
 public class Test {
     public static void main(String[] args) {
-        String s = "/home/alex/IdeaProjects/Ex5/advanced_filters/filter054.flt";
+        String s = "/home/alex/IdeaProjects/Ex5/advanced_filters/filter057.flt";
         String basicFilter = "/home/alex/IdeaProjects/Ex5/basic_filters/filter031.flt";
         Test.advTestSingle(s);
 //        Test.basicTestSingle(basicFilter);

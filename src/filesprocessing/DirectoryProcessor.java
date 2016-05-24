@@ -189,19 +189,40 @@ public class DirectoryProcessor implements Iterable<String[]> {
 
         class FilterBlockIterator implements Iterator<String[]> {
             private String[] block;
+            private String nextBlockFirstLine;
 
             public boolean hasNext() {
                 block = new String[4];
+                int i;
+                // verify first node wasn't found in previous iteration
+                if (nextBlockFirstLine != null) {
+                    block[0] = nextBlockFirstLine;
+                    nextBlockFirstLine = null;
+                    i = 1;
+                } else {
+                    i = 0;
+                }
                 // Generate the next block
-                for (int i = 0; i < 4; i++) {
+                while (i < 4) {
                     try {
                         String line = lineNumberReader.readLine();
-                        if (line != null) {
+                        if (line == null) {
+                            break;
+                        }
+                        if (i == 1 && line.equals("ORDER")) {
+                            block[i] = null;
+                            i++;
+                            block[i] = line;
+                        } else if (i == 3 && line.equals("FILTER")) {
+                            block[i] = null;
+                            nextBlockFirstLine = line;
+                        } else {
                             block[i] = line;
                         }
                     } catch (IOException e) {
                         // TODO: handle exception
                     }
+                    i++;
                 }
                 // return true if a new block was generated
                 return (block[0] == null) ? false : true;
