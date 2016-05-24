@@ -73,12 +73,14 @@ public class DirectoryProcessor implements Iterable<String[]> {
             } catch (TypeIError e) {
                 System.err.print("Warning in line " + lineCounter + "\n");
                 System.err.flush();
+                notFlag = false;
                 fileFilter = new AllFileFilter();
             } catch (BadCommandFileFormat e) {
                 System.err.print("ERROR: Bad format of Commands File\n");
                 System.err.flush();
                 return;
             } catch (NullPointerException e) {
+                notFlag = false;
                 fileFilter = new AllFileFilter();
             }
 
@@ -128,7 +130,7 @@ public class DirectoryProcessor implements Iterable<String[]> {
                             addFlag = false;
                         }
                     }
-                    if (addFlag) {
+                    if (addFlag && f.isFile()) {
                         notFileList.add(f);
                     }
                 }
