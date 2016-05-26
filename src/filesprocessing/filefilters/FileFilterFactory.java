@@ -1,9 +1,7 @@
 package filesprocessing.filefilters;
 
-import filesprocessing.exceptions.BadCommandFileFormat;
 import filesprocessing.exceptions.BadFilterParameterException;
 import filesprocessing.exceptions.BadFilterState;
-import filesprocessing.exceptions.TypeIError;
 
 import java.io.FileFilter;
 
@@ -118,13 +116,7 @@ public class FileFilterFactory {
                     throw new BadFilterParameterException();
                 }
             }
-
-            // TODO: change the badfilterstate to badfilterparamexception and remove the try block
-            try {
-                return new WritableFileFilter(commandArray[1]);
-            } catch (BadFilterState e) {
-                throw new BadFilterParameterException();
-            }
+            return new WritableFileFilter(commandArray[1]);
         } else if (filter.equals(EXECUTABLE)) {  // executable/non-executable file filter generator
             if (commandArray[1] == null) {
                 throw new BadFilterParameterException();
@@ -137,28 +129,18 @@ public class FileFilterFactory {
                     throw new BadFilterParameterException();
                 }
             }
-
-            // TODO: change the badfilterstate to badfilterparamexception and remove the try block
-            try {
-                return new ExecutableFileFilter(commandArray[1]);
-            } catch (BadFilterState e) {
-                throw new BadFilterParameterException();
-            }
+            return new ExecutableFileFilter(commandArray[1]);
         } else if (filter.equals(HIDDEN)) {  // hidden/non-hidden file filter generator
             if (commandArray[1] == null) {
                 throw new BadFilterParameterException();
             }
+            // TODO: this shouldn't be here
             if (commandArray.length > 2 && commandArray[2] != null) {
                 if (!commandArray[2].equals(NOT)) {
                     throw new BadFilterParameterException();
                 }
             }
-            // TODO: change the badfilterstate to badfilterparamexception and remove the try block
-            try {
-                return new HiddenFileFilter(commandArray[1]);
-            } catch (BadFilterState e) {
-                throw new BadFilterParameterException();
-            }
+            return new HiddenFileFilter(commandArray[1]);
         } else if (filter.equals(ALL)) {
             return new AllFileFilter();
         }

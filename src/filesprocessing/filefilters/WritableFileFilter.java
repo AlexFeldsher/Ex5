@@ -1,5 +1,6 @@
 package filesprocessing.filefilters;
 
+import filesprocessing.exceptions.BadFilterParameterException;
 import filesprocessing.exceptions.BadFilterState;
 
 import java.io.File;
@@ -21,12 +22,12 @@ public class WritableFileFilter implements FileFilter {
      * Writable filter constructor
      *
      * @param state YES if writable, NO otherwise
-     * @throws BadFilterState if given state isn't supported
+     * @throws BadFilterParameterException if given state isn't supported
      */
-    public WritableFileFilter(String state) throws BadFilterState {
+    public WritableFileFilter(String state) throws BadFilterParameterException {
         filterState = state;
         if (!filterState.equals(WRITABLE) && !filterState.equals(NOT_WRITABLE)) {
-            throw new BadFilterState();
+            throw new BadFilterParameterException();
         }
     }
 

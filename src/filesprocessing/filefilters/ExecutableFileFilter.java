@@ -1,5 +1,6 @@
 package filesprocessing.filefilters;
 
+import filesprocessing.exceptions.BadFilterParameterException;
 import filesprocessing.exceptions.BadFilterState;
 
 import java.io.File;
@@ -22,12 +23,12 @@ public class ExecutableFileFilter implements FileFilter {
      * Executable filter constructor
      *
      * @param state YES if executable, NO if not executable
-     * @throws BadFilterState if given state isn't supported
+     * @throws BadFilterParameterException if given state isn't supported
      */
-    public ExecutableFileFilter(String state) throws BadFilterState {
+    public ExecutableFileFilter(String state) throws BadFilterParameterException {
         filterState = state;
         if (!filterState.equals(EXECUTABLE) && !filterState.equals(NOT_EXECUTABLE)) {
-            throw new BadFilterState();
+            throw new BadFilterParameterException();
         }
     }
 

@@ -1,5 +1,6 @@
 package filesprocessing.filefilters;
 
+import filesprocessing.exceptions.BadFilterParameterException;
 import filesprocessing.exceptions.BadFilterState;
 
 import java.io.File;
@@ -21,12 +22,12 @@ public class HiddenFileFilter implements FileFilter {
      * Hidden filter constructor
      *
      * @param state YES if hidden, NO not hidden
-     * @throws BadFilterState if given state isn't supported
+     * @throws BadFilterParameterException if given state isn't supported
      */
-    public HiddenFileFilter(String state) throws BadFilterState {
+    public HiddenFileFilter(String state) throws BadFilterParameterException {
         filterState = state;
         if (!filterState.equals(HIDDEN) && !filterState.equals(NOT_HIDDEN)) {
-            throw new BadFilterState();
+            throw new BadFilterParameterException();
         }
     }
 
