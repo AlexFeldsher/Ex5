@@ -11,7 +11,7 @@ Filterable interface
 2. There should be a filter factory
 
 
-Comperable interface
+Comparable interface
 1. Should use some kind of comperator. Check the tirgul
 2. There should be a comperator factory
 
@@ -25,3 +25,11 @@ ORDER
 command
 
 if there's no command, insert a null.
+
+
+
+TODO: FILTER 57 ERROR
+BUG FIX
+
+Could possibly need to add REVERSE functionality to the type comparator.
+Should find a way not.

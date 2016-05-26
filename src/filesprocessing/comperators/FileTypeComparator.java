@@ -8,6 +8,7 @@ public class FileTypeComparator implements Comparator<File> {
     private final String TYPE_DELIMITER = "\\.";
 
     public int compare(File file1, File file2) {
+        System.out.println("IN TYPECOMPARATOR");
         String[] fullFileName1 = file1.getName().split(TYPE_DELIMITER);
         String[] fullFileName2 = file2.getName().split(TYPE_DELIMITER);
         String fileType1;
@@ -25,6 +26,10 @@ public class FileTypeComparator implements Comparator<File> {
             fileType2 = fullFileName2[fullFileName2.length - 1];
         }
 
-        return fileType1.compareTo(fileType2);
+        if (fileType1.compareTo(fileType2) == 0) {
+            return file1.getName().compareTo((file2.getName()));
+        } else {
+            return fileType1.compareTo(fileType2);
+        }
     }
 }

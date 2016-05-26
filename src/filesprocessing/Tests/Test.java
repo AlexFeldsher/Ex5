@@ -3,13 +3,16 @@ package filesprocessing.Tests;
 import filesprocessing.DirectoryProcessor;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Comparator;
 
 public class Test {
     public static void main(String[] args) {
-        String s = "/home/alex/IdeaProjects/Ex5/advanced_filters/filter057.flt";
+        String s = "/home/alex/IdeaProjects/Ex5/advanced_filters/filter061.flt";
         String basicFilter = "/home/alex/IdeaProjects/Ex5/basic_filters/filter031.flt";
         Test.advTestSingle(s);
 //        Test.basicTestSingle(basicFilter);
+//        Test.filenameSortTest();
     }
 
     public static void advTestSingle(String filter) {
@@ -38,5 +41,22 @@ public class Test {
         // single test
         String[] com = {basicSourceDir, filter};
         DirectoryProcessor.main(com);
+    }
+
+    public static void filenameSortTest() {
+        String[] s = {"file2.txt", "file1.txt", "file3.txt", "file0.txt", "file4.txt"};
+        ArrayList<String> names = new ArrayList<>();
+        for (String str : s) {
+            names.add(str);
+        }
+        class StringComparator implements Comparator<String> {
+            public int compare(String s1, String s2) {
+                return s1.compareTo(s2);
+            }
+        }
+        names.sort(new StringComparator());
+        for (String str : names) {
+            System.out.println(str);
+        }
     }
 }

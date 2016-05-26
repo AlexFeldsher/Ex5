@@ -140,13 +140,17 @@ public class DirectoryProcessor implements Iterable<String[]> {
             // order files
             if (fileList.size() > 1) {
                 if (reverseFlag) {
+                    System.out.println(fileComparator);
                     fileList.sort(fileComparator.reversed());
                 } else {
+                    System.out.println(fileComparator);
                     fileList.sort(fileComparator);
                 }
             }
 
-            orderFileslist.addAll(fileList);
+            for (File f : fileList) {
+                orderFileslist.add(f);
+            }
             // print final list
             /*
             for (File f : fileList) {
