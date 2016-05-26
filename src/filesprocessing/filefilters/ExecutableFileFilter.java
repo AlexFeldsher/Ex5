@@ -1,7 +1,6 @@
 package filesprocessing.filefilters;
 
 import filesprocessing.exceptions.BadFilterParameterException;
-import filesprocessing.exceptions.BadFilterState;
 
 import java.io.File;
 import java.io.FileFilter;

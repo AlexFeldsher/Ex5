@@ -54,17 +54,21 @@ public class DirectoryProcessor {
             fileList = dp.processDirectory();
         } catch (IOException e) {
             System.err.println(IO_EXCEPTION_MSG);
+            System.err.flush();
             return;
-        } catch (BadCommandFileFormat e) {
+        } catch (BadFilterFileFormatException e) {
             System.err.println(BAD_FILE_FORMAT_MSG);
+            System.err.flush();
             return;
         } catch (BadSubSectionNameException e) {
             System.err.println(BAD_SUBSECTION_ERR_MSG);
+            System.err.flush();
             return;
         }
 
         for (File file : fileList) {
             System.out.println(file.getName());
+            System.out.flush();
         }
     }
 
@@ -74,18 +78,19 @@ public class DirectoryProcessor {
      * @param filterFilePath path to the filter file
      * @param sourceDirPath  path to the source directory
      * @throws IOException          IO error with the filter file
-     * @throws BadCommandFileFormat invalid filter file format
+     * @throws BadFilterFileFormatException invalid filter file format
      */
     public DirectoryProcessor(String filterFilePath, String sourceDirPath) throws IOException,
-            BadCommandFileFormat {
+            BadFilterFileFormatException {
         SOURCE_DIR = new File(sourceDirPath);
         FILTER_FILE_PATH = filterFilePath;
         notFlag = false;
         reverseFlag = false;
         currentLineNumber = 0;
+        // validate the filter file
         boolean filterValid = validateFilterFileStructure();
         if (!filterValid) {
-            throw new BadCommandFileFormat();
+            throw new BadFilterFileFormatException();
         }
     }
 
@@ -95,10 +100,10 @@ public class DirectoryProcessor {
      * @return array list of filtered and sorted file objects
      * @throws IOException                IO error
      * @throws BadSubSectionNameException filter file has bad subsection name (FILTER/ORDER)
-     * @throws BadCommandFileFormat       filter file has a bad format (missing FILTER or ORDER)
+     * @throws BadFilterFileFormatException       filter file has a bad format (missing FILTER or ORDER)
      */
     public ArrayList<File> processDirectory() throws IOException, BadSubSectionNameException,
-            BadCommandFileFormat {
+            BadFilterFileFormatException {
         FileReader filterFileReader = new FileReader(FILTER_FILE_PATH);
         BufferedReader bufferedFilterReader = new BufferedReader(filterFileReader);
         IterableFilterFile iterableFilterFile = new IterableFilterFile(bufferedFilterReader);
@@ -109,28 +114,16 @@ public class DirectoryProcessor {
             fileList.addAll(blockFileList);
         }
         return fileList;
-
-        /*
-        } catch (IOException e) {
-            // TODO: handle exception
-            System.err.println(BAD_FILE_FORMAT_MSG);
-            return;
-        } catch (BadSubSectionNameException e) {
-            // TODO: err
-        } catch (BadCommandFileFormat e) {
-            System.err.println(BAD_FILE_FORMAT_MSG);
-        }
-        */
     }
 
     /*
      * Receives a FILTER-ORDER block and returns a filtered and sorted file array list
      * @param filterFileBlock a FILTER-ORDER block
      * @return filtered and sorted file array list
-     * @throws BadCommandFileFormat
+     * @throws BadFilterFileFormatException
      * @throws BadSubSectionNameException
      */
-    private ArrayList<File> processBlock(String[] filterFileBlock) throws BadCommandFileFormat,
+    private ArrayList<File> processBlock(String[] filterFileBlock) throws BadFilterFileFormatException,
             BadSubSectionNameException {
         String filterSubSection = filterFileBlock[0];
         String filterCommand = filterFileBlock[1];
@@ -145,7 +138,7 @@ public class DirectoryProcessor {
         int validFilterSec = validateFilterSubSection(filterSubSection);
         switch (validFilterSec) {
             case MISSING_SUBSECTION:
-                throw new BadCommandFileFormat();
+                throw new BadFilterFileFormatException();
             case BAD_SUBSECTION_NAME:
                 throw new BadSubSectionNameException();
         }
@@ -160,6 +153,7 @@ public class DirectoryProcessor {
             fileFilter = DEFAULT_FILE_FILTER;
             currentLineNumber++;
             System.err.println(WARNING_MSG + currentLineNumber);
+            System.err.flush();
         }
 
         // handle third line
@@ -167,7 +161,7 @@ public class DirectoryProcessor {
         int validOrderSec = validateOrderSubSection(orderSubSection);
         switch (validOrderSec) {
             case MISSING_SUBSECTION:
-                throw new BadCommandFileFormat();
+                throw new BadFilterFileFormatException();
             case BAD_SUBSECTION_NAME:
                 throw new BadSubSectionNameException();
         }
@@ -178,10 +172,11 @@ public class DirectoryProcessor {
             currentLineNumber++;
         } catch (NullPointerException e) {
             fileComparator = DEFAULT_FILE_COMPARATOR;
-        } catch (BadOrderTypeException e) {
+        } catch (BadFilterParameterException e) {
             fileComparator = DEFAULT_FILE_COMPARATOR;
             currentLineNumber++;
             System.err.println(WARNING_MSG + currentLineNumber);
+            System.err.flush();
         }
 
         ArrayList<File> fileList = filterFiles(fileFilter);
@@ -294,7 +289,7 @@ public class DirectoryProcessor {
      * @param orderCommand order command string.
      * @return file comparator.
      */
-    private Comparator<File> generateFileComparator(String orderCommand) throws BadOrderTypeException,
+    private Comparator<File> generateFileComparator(String orderCommand) throws BadFilterParameterException,
             NullPointerException {
         String[] splitOrderCommand = orderCommand.split("#");
         // true if last order command parameter is "REVERSE", otherwise false
