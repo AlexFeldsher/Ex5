@@ -22,6 +22,7 @@ public class DirectoryProcessor implements Iterable<String[]> {
         // handles invalid subsection names
         try {
             if (!dp.validateCommandsFileStructure(filterFilePath)) {
+                System.out.println("HEREERERER");
                 System.err.print("ERROR: Bad subsection name\n");
                 return;
             }

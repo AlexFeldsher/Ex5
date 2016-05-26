@@ -8,7 +8,7 @@ import java.util.Comparator;
 
 public class Test {
     public static void main(String[] args) {
-        String s = "/cs/stud/feld/IdeaProjects/Ex5/advanced_filters/filter058.flt";
+        String s = "/cs/stud/feld/IdeaProjects/Ex5/advanced_filters/filter061.flt";
         String basicFilter = "/cs/stud/feld/IdeaProjects/Ex5/basic_filters/filter031.flt";
         Test.advTestSingle(s);
 //        Test.basicTestSingle(basicFilter);
@@ -44,7 +44,7 @@ public class Test {
     }
 
     public static void filenameSortTest() {
-        String[] s = {"file2.txt", "file1.txt", "file3.txt", "file0.txt", "file4.txt"};
+        String[] s = {"file2.txt", "same_name_c.txt"};
         ArrayList<String> names = new ArrayList<>();
         for (String str : s) {
             names.add(str);

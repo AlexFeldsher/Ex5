@@ -18,6 +18,8 @@ public class FileSizeComparator implements Comparator<File> {
             return 1;
         }
         // files equal in size
-        return 0;
+        String fileName1 = file1.getName();
+        String fileName2 = file2.getName();
+        return fileName1.compareTo(fileName2);
     }
 }
