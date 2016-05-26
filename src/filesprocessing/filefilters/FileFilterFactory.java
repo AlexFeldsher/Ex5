@@ -34,8 +34,7 @@ public class FileFilterFactory {
      *
      * @param commandString a filter string "type#state/NO/YES#NOT"
      * @return file filter
-     * @throws TypeIError
-     * @throws BadCommandFileFormat
+     * @throws BadFilterParameterException bad commandString parameters
      */
     public static FileFilter select(String commandString) throws BadFilterParameterException,
             NullPointerException {
