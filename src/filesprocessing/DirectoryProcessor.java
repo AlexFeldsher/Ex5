@@ -1,6 +1,5 @@
 package filesprocessing;
 
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import filesprocessing.comperators.FileComparatorFactory;
 import filesprocessing.comperators.FileNameComparator;
 import filesprocessing.exceptions.*;
@@ -15,6 +14,7 @@ public class DirectoryProcessor {
     /* default filter and comparator */
     private final FileFilter DEFAULT_FILE_FILTER = new AllFileFilter();
     private final Comparator<File> DEFAULT_FILE_COMPARATOR = new FileNameComparator();
+
     /* subsection constants */
     private final int MISSING_SUBSECTION = 1;
     private final int BAD_SUBSECTION_NAME = -1;
@@ -39,6 +39,10 @@ public class DirectoryProcessor {
     /* counter for the current filter file line number */
     private int currentLineNumber;
 
+    /* filter parameters */
+    private final String NOT_PARAM = "NOT";
+    private final String REVERSE_PARAM = "REVERSE";
+
 
     public static void main(String[] args) {
         String sourceDirPath = args[0];
@@ -62,158 +66,6 @@ public class DirectoryProcessor {
         for (File file : fileList) {
             System.out.println(file.getName());
         }
-        /*
-        // handles invalid subsection names
-        try {
-            if (!dp.validateFilterFileStructure(filterFilePath)) {
-                System.err.print(BAD_SUBSECTION_ERR_MSG);
-                System.err.flush();
-                return;
-            }
-        } catch (IOException e) {
-            System.err.print(IO_EXCEPTION_MSG);
-            return;
-        }
-
-        /* closed loop
-        File temp = new File(filterFilePath);
-        String filterName = temp.getName();
-        */
-
-        /*
-        // source dir object
-        File sourceDir = new File(sourceDirPath);
-        // final files list object
-        ArrayList<File> orderFileslist = new ArrayList<>();
-        // line counter
-        int lineCounter = 0;
-
-        // file filter
-        FileFilter fileFilter;
-        // file comparator
-        Comparator<File> fileComparator;
-
-        */
-        /*
-        // loop over directory processor object
-        for (String[] commandBlock : dp) {
-            // block file list
-            ArrayList<File> fileList = new ArrayList<>();
-
-            // not command was used flag
-            boolean notFlag = false;
-            // reverse command was used flag
-            boolean reverseFlag = false;
-
-            // handle line 1
-            lineCounter++;
-            if (commandBlock[0] == null) {
-                System.err.print("ERROR: Bad format of Commands File\n");
-                System.err.flush();
-                return;
-            }
-            if (!commandBlock[0].equals("FILTER")) {
-                System.err.print("ERROR: Bad subsection name\n");
-                System.err.flush();
-                return;
-            }
-
-            // handle line 2
-            if (commandBlock[1] != null) {
-                lineCounter++;
-            }
-            try {
-                String[] splitFilterCommand = commandBlock[1].split("#");
-                notFlag = splitFilterCommand[splitFilterCommand.length - 1].equals("NOT") ? true : false;
-                fileFilter = FileFilterFactory.select(commandBlock[1]);
-            } catch (BadFilterParameterException e) {
-                System.err.print("Warning in line " + lineCounter + "\n");
-                System.err.flush();
-                notFlag = false;
-                fileFilter = new AllFileFilter();
-            } catch (NullPointerException e) {
-                notFlag = false;
-                fileFilter = new AllFileFilter();
-            }
-
-            // handle line 3
-            lineCounter++;
-            if (commandBlock[2] == null) {
-                System.err.print("ERROR: Bad format of Commands File\n");
-                System.err.flush();
-                return;
-            }
-            if (!commandBlock[2].equals("ORDER")) {
-                System.err.print("ERROR: Bad subsection name\n");
-                System.err.flush();
-                return;
-            }
-
-            // handle line 4
-            lineCounter++;
-            if (commandBlock[3] == null) {
-                fileComparator = new FileNameComparator();
-                lineCounter--;
-            } else {
-                try {
-                    String[] splitOrderCommand = commandBlock[3].split("#");
-                    reverseFlag = splitOrderCommand[splitOrderCommand.length - 1].equals("REVERSE") ? true : false;
-                    fileComparator = FileComparatorFactory.select(splitOrderCommand[0]);
-                } catch (NullPointerException e) {
-                    System.err.print("Warning in line " + lineCounter + "\n");
-                    System.err.flush();
-                    fileComparator = new FileNameComparator();
-                } catch (BadOrderTypeException e) {
-                    System.err.print("Warning in line " + lineCounter + "\n");
-                    System.err.flush();
-                    fileComparator = new FileNameComparator();
-                }
-            }
-
-            // filter files
-            for (File f : sourceDir.listFiles(fileFilter)) {
-                    fileList.add(f);
-            }
-            if (notFlag) {
-                ArrayList<File> notFileList = new ArrayList<>();
-                for (File f : sourceDir.listFiles()) {
-                    boolean addFlag = true;
-                    for (File f2 : fileList) {
-                        if (f.getName().equals(f2.getName())) {
-                            addFlag = false;
-                        }
-                    }
-                    if (addFlag && f.isFile()) {
-                        notFileList.add(f);
-                    }
-                }
-                fileList = notFileList;
-            }
-
-            // order files
-            if (fileList.size() > 1) {
-                if (reverseFlag) {
-                    fileList.sort(fileComparator);
-                    Collections.reverse(fileList);
-                } else {
-                    fileList.sort(fileComparator);
-                }
-            }
-
-            for (File f : fileList) {
-                orderFileslist.add(f);
-            }
-            // print final list
-            /*
-            for (File f : fileList) {
-                System.out.println(f.getName());
-            }
-        }
-        // print files
-        for (File f : orderFileslist) {
-            System.out.println(f.getName());
-        }
-        */
     }
 
     /**
@@ -398,7 +250,7 @@ public class DirectoryProcessor {
         if (filterSubSection == null) {
             return MISSING_SUBSECTION;
         }
-        if (filterSubSection.equals(FILTER_SUBSECTION_NAME)) {
+        if (!filterSubSection.equals(FILTER_SUBSECTION_NAME)) {
             return BAD_SUBSECTION_NAME;
         }
 
@@ -415,7 +267,7 @@ public class DirectoryProcessor {
         if (orderSubSection == null) {
             return MISSING_SUBSECTION;
         }
-        if (orderSubSection.equals(ORDER_SUBSECTION_NAME)) {
+        if (!orderSubSection.equals(ORDER_SUBSECTION_NAME)) {
             return BAD_SUBSECTION_NAME;
         }
 
@@ -432,7 +284,7 @@ public class DirectoryProcessor {
             NullPointerException {
         String[] splitFilterCommand = filterCommand.split("#");
         // true if last filter command parameter is "NOT", otherwise false
-        notFlag = splitFilterCommand[splitFilterCommand.length - 1].equals("NOT") ? true : false;
+        notFlag = splitFilterCommand[splitFilterCommand.length - 1].equals(NOT_PARAM) ? true : false;
         return FileFilterFactory.select(filterCommand);
     }
 
@@ -446,7 +298,7 @@ public class DirectoryProcessor {
             NullPointerException {
         String[] splitOrderCommand = orderCommand.split("#");
         // true if last order command parameter is "REVERSE", otherwise false
-        reverseFlag = splitOrderCommand[splitOrderCommand.length - 1].equals("REVERSE") ? true : false;
+        reverseFlag = splitOrderCommand[splitOrderCommand.length - 1].equals(REVERSE_PARAM) ? true : false;
         return FileComparatorFactory.select(splitOrderCommand[0]);
     }
 
