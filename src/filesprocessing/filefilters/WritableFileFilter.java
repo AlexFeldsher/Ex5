@@ -30,6 +30,13 @@ public class WritableFileFilter implements FileFilter {
         }
     }
 
+    /**
+     * Tests whether or not the specified abstract pathname should be included in a pathname list.
+     * Accepts files that are writable/non-writable depending on the state the filter was initialized with.
+     *
+     * @param file File object
+     * @return true if accepted, otherwise false.
+     */
     public boolean accept(File file) {
         if (filterState.equals(WRITABLE)) {
             return (file.canWrite() && file.isFile());

@@ -19,6 +19,13 @@ public class PrefixFileFilter implements FileFilter {
         PREFIX = prefix;
     }
 
+    /**
+     * Tests whether or not the specified abstract pathname should be included in a pathname list.
+     * Accepts files with a file name that contains the prefix the filter was initialized with.
+     *
+     * @param file File object
+     * @return true if the file name begins with a given string, false otherwise
+     */
     public boolean accept(File file) {
         if (file.getName().startsWith(PREFIX)) {
             return file.isFile();

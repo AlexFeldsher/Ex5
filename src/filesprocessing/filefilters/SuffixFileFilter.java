@@ -19,6 +19,13 @@ public class SuffixFileFilter implements FileFilter {
         SUFFIX = suffix;
     }
 
+    /**
+     * Tests whether or not the specified abstract pathname should be included in a pathname list.
+     * Accepts files that their file names end with the suffix the filter was initialized with.
+     *
+     * @param file File object
+     * @return true if file name ends with a suffix, false otherwise.
+     */
     public boolean accept(File file) {
         if (file.getName().endsWith(SUFFIX)) {
             return file.isFile();

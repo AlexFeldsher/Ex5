@@ -11,6 +11,15 @@ public class FileTypeComparator implements Comparator<File> {
     /* Constant of the file type extension delimiter */
     private final String TYPE_DELIMITER = "\\.";
 
+    /**
+     * Compare file type (lexicographically). Returns a negative integer, zero, or a positive integer as
+     * the first argument is less than, equal to, or greater than the second.
+     *
+     * @param file1 a file object
+     * @param file2 a file object
+     * @return a negative integer, zero, or a positive integer as the first argument is less than, equal to,
+     * or greater than the second
+     */
     public int compare(File file1, File file2) {
         // get file type strings
         String[] fileTypes = getFileTypes(file1, file2);

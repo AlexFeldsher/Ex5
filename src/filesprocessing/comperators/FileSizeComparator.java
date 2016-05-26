@@ -8,6 +8,15 @@ import java.util.Comparator;
  * If file sizes are the same, then they are returned in a lexicographical order.
  */
 public class FileSizeComparator implements Comparator<File> {
+    /**
+     * Compare file size. Returns a negative integer, zero, or a positive integer as the first argument is
+     * less than, equal to, or greater than the second.
+     *
+     * @param file1 a file object
+     * @param file2 a file object
+     * @return a negative integer, zero, or a positive integer as the first argument is less than, equal to,
+     * or greater than the second
+     */
     public int compare(File file1, File file2) {
         long fileSize1 = file1.length();
         long fileSize2 = file2.length();

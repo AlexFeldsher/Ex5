@@ -12,6 +12,7 @@ public class BetweenFileFilter implements FileFilter {
     private final double LOWER_LIMIT;
     private final double UPPER_LIMIT;
 
+    /* Constant - the byte size of a kilobyte */
     private final int KILOBYTE = 1024;
 
     /**
@@ -25,6 +26,13 @@ public class BetweenFileFilter implements FileFilter {
         UPPER_LIMIT = y * KILOBYTE;
     }
 
+    /**
+     * Tests whether or not the specified abstract pathname should be included in a pathname list.
+     * Checks whether the file size is between given upper and lower limits (inclusive).
+     *
+     * @param file File object
+     * @return true if the file size is between the given limits, false otherwise
+     */
     public boolean accept(File file) {
         if (file.length() >= LOWER_LIMIT && file.length() <= UPPER_LIMIT) {
             return file.isFile();
