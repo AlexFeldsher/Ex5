@@ -3,6 +3,9 @@ package filesprocessing.comperators;
 import java.io.File;
 import java.util.Comparator;
 
+/**
+ * File size comparator, compares files according to file size
+ */
 public class FileSizeComparator implements Comparator<File> {
     public int compare(File file1, File file2) {
         long fileSize1 = file1.length();
@@ -13,7 +16,7 @@ public class FileSizeComparator implements Comparator<File> {
         if (fileSize1 > fileSize2) {
             return 1;
         }
-        // if size is the same then sort lexicographically
-        return file1.getName().compareTo(file2.getName());
+        // files equal in size
+        return 0;
     }
 }
