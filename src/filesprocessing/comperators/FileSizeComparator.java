@@ -4,7 +4,8 @@ import java.io.File;
 import java.util.Comparator;
 
 /**
- * File size comparator, compares files according to file size
+ * File size comparator, compares files according to file size.
+ * If file sizes are the same, then they are returned in a lexicographical order.
  */
 public class FileSizeComparator implements Comparator<File> {
     public int compare(File file1, File file2) {

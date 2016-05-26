@@ -9,10 +9,7 @@ import filesprocessing.filefilters.AllFileFilter;
 import filesprocessing.filefilters.FileFilterFactory;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 public class DirectoryProcessor implements Iterable<String[]> {
 
@@ -140,10 +137,9 @@ public class DirectoryProcessor implements Iterable<String[]> {
             // order files
             if (fileList.size() > 1) {
                 if (reverseFlag) {
-                    System.out.println(fileComparator);
-                    fileList.sort(fileComparator.reversed());
+                    fileList.sort(fileComparator);
+                    Collections.reverse(fileList);
                 } else {
-                    System.out.println(fileComparator);
                     fileList.sort(fileComparator);
                 }
             }
