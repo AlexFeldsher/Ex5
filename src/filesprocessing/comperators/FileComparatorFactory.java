@@ -1,5 +1,6 @@
 package filesprocessing.comperators;
 
+import filesprocessing.exceptions.BadOrderTypeException;
 import filesprocessing.exceptions.TypeIError;
 
 import java.io.File;
@@ -21,7 +22,7 @@ public class FileComparatorFactory {
      * @return a comparator
      * @throws TypeIError the requested comparator doesn't exist
      */
-    public static Comparator<File> select(String order) throws TypeIError, NullPointerException {
+    public static Comparator<File> select(String order) throws BadOrderTypeException, NullPointerException {
         if (order.equals(FILE_NAME)) {
             return new FileNameComparator();
         }
@@ -31,6 +32,6 @@ public class FileComparatorFactory {
         if (order.equals(FILE_SIZE)) {
             return new FileSizeComparator();
         }
-        throw new TypeIError();
+        throw new BadOrderTypeException();
     }
 }

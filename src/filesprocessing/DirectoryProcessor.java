@@ -3,6 +3,7 @@ package filesprocessing;
 import filesprocessing.comperators.FileComparatorFactory;
 import filesprocessing.comperators.FileNameComparator;
 import filesprocessing.exceptions.BadCommandFileFormat;
+import filesprocessing.exceptions.BadOrderTypeException;
 import filesprocessing.exceptions.BadSubSectionNameException;
 import filesprocessing.exceptions.TypeIError;
 import filesprocessing.filefilters.AllFileFilter;
@@ -22,8 +23,8 @@ public class DirectoryProcessor implements Iterable<String[]> {
         // handles invalid subsection names
         try {
             if (!dp.validateCommandsFileStructure(filterFilePath)) {
-                System.out.println("HEREERERER");
                 System.err.print("ERROR: Bad subsection name\n");
+                System.err.flush();
                 return;
             }
         } catch (IOException e) {
@@ -111,7 +112,7 @@ public class DirectoryProcessor implements Iterable<String[]> {
                     System.err.print("Warning in line " + lineCounter + "\n");
                     System.err.flush();
                     fileComparator = new FileNameComparator();
-                } catch (TypeIError e) {
+                } catch (BadOrderTypeException e) {
                     System.err.print("Warning in line " + lineCounter + "\n");
                     System.err.flush();
                     fileComparator = new FileNameComparator();

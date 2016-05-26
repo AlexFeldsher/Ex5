@@ -8,10 +8,10 @@ import java.util.Comparator;
 
 public class Test {
     public static void main(String[] args) {
-        String s = "/cs/stud/feld/IdeaProjects/Ex5/advanced_filters/filter061.flt";
-        String basicFilter = "/cs/stud/feld/IdeaProjects/Ex5/basic_filters/filter031.flt";
-        Test.advTestSingle(s);
-//        Test.basicTestSingle(basicFilter);
+        String s = "/cs/stud/feld/IdeaProjects/Ex5/advanced_filters/filter059.flt";
+        String basicFilter = "/cs/stud/feld/IdeaProjects/Ex5/basic_filters/filter023.flt";
+//        Test.advTestSingle(s);
+        Test.basicTestSingle(basicFilter);
 //        Test.filenameSortTest();
     }
 
