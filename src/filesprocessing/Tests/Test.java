@@ -8,7 +8,7 @@ import java.util.Comparator;
 
 public class Test {
     public static void main(String[] args) {
-        String s = "/cs/stud/feld/IdeaProjects/Ex5/advanced_filters/filter057.flt";
+        String s = "/cs/stud/feld/IdeaProjects/Ex5/advanced_filters/filter058.flt";
         String basicFilter = "/cs/stud/feld/IdeaProjects/Ex5/basic_filters/filter031.flt";
         Test.advTestSingle(s);
 //        Test.basicTestSingle(basicFilter);

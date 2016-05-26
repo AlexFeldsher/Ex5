@@ -62,7 +62,9 @@ public class DirectoryProcessor implements Iterable<String[]> {
             }
 
             // handle line 2
-            lineCounter++;
+            if (commandBlock[1] != null) {
+                lineCounter++;
+            }
             try {
                 String[] splitFilterCommand = commandBlock[1].split("#");
                 notFlag = splitFilterCommand[splitFilterCommand.length - 1].equals("NOT") ? true : false;
@@ -98,6 +100,7 @@ public class DirectoryProcessor implements Iterable<String[]> {
             lineCounter++;
             if (commandBlock[3] == null) {
                 fileComparator = new FileNameComparator();
+                lineCounter--;
             } else {
                 try {
                     String[] splitOrderCommand = commandBlock[3].split("#");
