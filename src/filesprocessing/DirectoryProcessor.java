@@ -53,7 +53,10 @@ public class DirectoryProcessor {
         ArrayList<File> fileList;
         try {
             dp = new DirectoryProcessor(filterFilePath, sourceDirPath);
+            /*
             fileList = dp.processDirectory();
+            */
+            dp.processDirectory();
         } catch (IOException e) {
             System.err.println(IO_EXCEPTION_MSG);
             System.err.flush();
@@ -68,10 +71,12 @@ public class DirectoryProcessor {
             return;
         }
 
+        /*
         for (File file : fileList) {
             System.out.println(file.getName());
             System.out.flush();
         }
+        */
     }
 
     /**
@@ -104,7 +109,7 @@ public class DirectoryProcessor {
      * @throws BadSubSectionNameException filter file has bad subsection name (FILTER/ORDER)
      * @throws BadFilterFileFormatException       filter file has a bad format (missing FILTER or ORDER)
      */
-    public ArrayList<File> processDirectory() throws IOException, BadSubSectionNameException,
+    public void processDirectory() throws IOException, BadSubSectionNameException,
             BadFilterFileFormatException {
         FileReader filterFileReader = new FileReader(FILTER_FILE_PATH);
         BufferedReader bufferedFilterReader = new BufferedReader(filterFileReader);
@@ -114,13 +119,20 @@ public class DirectoryProcessor {
         try {
             for (String[] filterBlock : iterableFilterFile) {
                 ArrayList<File> blockFileList = processBlock(filterBlock);
+                for (File file : blockFileList) {
+                    System.out.println(file.getName());
+                }
+                /*
                 fileList.addAll(blockFileList);
+                */
             }
         } catch (RuntimeException e) {
             // RuntimeException is thrown in the iterator when there's an IOException
             throw new IOException(e);
         }
+        /*
         return fileList;
+        */
     }
 
     /*
@@ -156,9 +168,11 @@ public class DirectoryProcessor {
             currentLineNumber++;
         } catch (NullPointerException e) {
             fileFilter = DEFAULT_FILE_FILTER;
+            notFlag = false;  // disable the NOT flag
         } catch (BadFilterParameterException e) {
             fileFilter = DEFAULT_FILE_FILTER;
             currentLineNumber++;
+            notFlag = false;  // disable the NOT flag
             System.err.println(WARNING_MSG + currentLineNumber);
             System.err.flush();
         }

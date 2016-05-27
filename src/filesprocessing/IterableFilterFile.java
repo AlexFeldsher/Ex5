@@ -82,20 +82,18 @@ public class IterableFilterFile implements Iterable<String[]> {
             }
 
             public boolean hasNext() {
-                // a new block was generated if the first block cell isn't null
-                // return true if a new block was generated
-                return (block[0] == null) ? false : true;
-            }
-
-            public String[] next() throws NoSuchElementException {
                 // filter file buffered reader can throw an IOException
                 try {
                     generateNextBlock();
                 } catch (IOException e) {
                     // Throw a runtime exception
                     throw new RuntimeException(e);
-                }
+                }                // a new block was generated if the first block cell isn't null
+                // return true if a new block was generated
+                return (block[0] == null) ? false : true;
+            }
 
+            public String[] next() throws NoSuchElementException {
                 if (block[0] != null) {
                     return block;
                 }

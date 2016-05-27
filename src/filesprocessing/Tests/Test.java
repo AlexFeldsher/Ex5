@@ -8,15 +8,15 @@ import java.util.Comparator;
 
 public class Test {
     public static void main(String[] args) {
-        String s = "/cs/stud/feld/IdeaProjects/Ex5/advanced_filters/filter059.flt";
-        String basicFilter = "/cs/stud/feld/IdeaProjects/Ex5/basic_filters/filter023.flt";
+        String s = "/home/alex/IdeaProjects/Ex5/advanced_filters/filter061.flt";
+        String basicFilter = "/home/alex/IdeaProjects/Ex5/basic_filters/filter023.flt";
         Test.advTestSingle(s);
 //        Test.basicTestSingle(basicFilter);
 //        Test.filenameSortTest();
     }
 
     public static void advTestSingle(String filter) {
-        String advSourceDir = "/cs/stud/feld/IdeaProjects/Ex5/advanced_source_directory";
+        String advSourceDir = "/home/alex/IdeaProjects/Ex5/advanced_source_directory";
         String[] com = {advSourceDir, filter};
         DirectoryProcessor.main(com);
 
