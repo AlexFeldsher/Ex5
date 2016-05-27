@@ -72,8 +72,72 @@ according to a give filter file that contains different filters and order requir
 All the filter classes were made interchangeable with each other and the comparator classes
 are interchangeable with other comparator classes. That way the DirectoryProcessor doesn't need
 to fit itself to the implementation of a individual filter/comparator class.
+Also the program has a minimal API that is exposed to the user. All the complex internal processing
+is hidden and only the essential methods are available to the user.
 
 
 =============================
 =  Implementation details   =
 =============================
+DirectoryProcessor - Contains the main method. The main method creates an instance a
+    DirectoryProcessor object and initialized it with a source directory and a filter file path.
+    When initialized the directory processor validates the validity of the filter file structure
+    and throws a BadFilterFileFormatException.
+    The processDirectory method is public, when it's called the directory the object was
+    initialized with in precessed according to the command in the filter file the object was
+    initialized with.
+    The processDirectory iterates over an IterableFilterFile object that was generated for the
+    filter file, the IterableFilterFile returns a block of FILTER-ORDER string array and it's
+    precessed by a method that analyzes the contents of the string array, generates the
+    appropriate file filter and comparator and returns an array list of filtered and sorted
+    files. The filtered files are put in an ArrayList and it is sorted using the sort method
+    with the generated comparator. This was done since Java has a sorting algorithm implemented
+    that has the time complexity of less than Nlog(N) (since Java 7) and is far better than
+    anything I could write in a few days, even when I know the exact implementation needs of my
+    program. Additionally it's sometimes better to use a general sorting algorithm in case the use
+    case of the program will change in the future.
+    The array list of files returned to the processDirectory method is printed and the next
+    block of FILTER-ORDER is iterated over.
+
+    The Collections sort javadoc:
+    "Implementation note: This implementation is a stable, adaptive, iterative mergesort that requires
+    far fewer than n lg(n) comparisons when the input array is partially sorted, while offering the
+    performance of a traditional mergesort when the input array is randomly ordered. If the input array is
+    nearly sorted, the implementation requires approximately n comparisons. Temporary storage requirements
+    vary from a small constant for nearly sorted input arrays to n/2 object references for randomly ordered
+    input arrays.
+
+    The implementation takes equal advantage of ascending and descending order in its input array, and can
+    take advantage of ascending and descending order in different parts of the same input array. It is
+    well-suited to merging two or more sorted arrays: simply concatenate the arrays and sort the resulting
+    array.
+
+    The implementation was adapted from Tim Peters's list sort for Python ( TimSort). It uses techiques from
+    Peter McIlroy's "Optimistic Sorting and Information Theoretic Complexity", in Proceedings of the Fourth
+    Annual ACM-SIAM Symposium on Discrete Algorithms, pp 467-474, January 1993.
+
+    This implementation dumps the specified list into an array, sorts the array, and iterates over the list
+    resetting each element from the corresponding position in the array. This avoids the n2 log(n)
+    performance that would result from attempting to sort a linked list in place."
+
+IterableFilterFile - Holds static constants of the subsection names to be used by other classes
+    in the package. Implements iterable for use in a for each loop, the iterator method returns
+    an iterator that iterates over FILTER-ORDER blocks in the filter file buffered reader the
+    class was initialized with. If after a subsection name (FILTER/ORDER) a parameter line
+    is missing, then it's place is marked with a null to denote a missing parameter line.
+FileFilterFactory - Has a static class that returns a file filter according to the given
+    filter command line. Each filter type has its own "if" block that initializes it according
+    to the given parameters in the command line. Each filter class implements FileFilter to
+    have a common API. If a parameter is invalid in the filter command line an appropriate
+    exception in thrown.
+FileFilters - implement FileFilter to have a consistent API between all the filters.
+FileComparatorFactory - The same as the FileFilterFactory only returns instances of
+    file comparators.
+FileComparators - Implement Comparator to have a consistent API between all the comparators.
+    And for an easy sort with an ArrayList.
+ExceptionClasses - New exception classes were written in order to have exception that tell
+    more accurately what's the problem.
+    BadFilterFileFormatException is thrown when an FILTER or ORDER subsection is missing.
+    BadFilterParameterException is thrown when there's an invalid parameter in the filter or
+    order command line.
+    BadSubSectionNameException is thrown when a subsection has an invalid name.
