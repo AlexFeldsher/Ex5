@@ -19,8 +19,6 @@ public class DirectoryProcessor {
     private final int MISSING_SUBSECTION = 1;
     private final int BAD_SUBSECTION_NAME = -1;
     private final int VALID_SUBSECTION = 0;
-    private final String FILTER_SUBSECTION_NAME = "FILTER";
-    private final String ORDER_SUBSECTION_NAME = "ORDER";
 
     /* Error messages */
     private static final String BAD_SUBSECTION_ERR_MSG = "ERROR: Bad subsection name";
@@ -109,9 +107,14 @@ public class DirectoryProcessor {
         IterableFilterFile iterableFilterFile = new IterableFilterFile(bufferedFilterReader);
         ArrayList<File> fileList = new ArrayList<>();
 
-        for (String[] filterBlock : iterableFilterFile) {
-            ArrayList<File> blockFileList = processBlock(filterBlock);
-            fileList.addAll(blockFileList);
+        try {
+            for (String[] filterBlock : iterableFilterFile) {
+                ArrayList<File> blockFileList = processBlock(filterBlock);
+                fileList.addAll(blockFileList);
+            }
+        } catch (RuntimeException e) {
+            // RuntimeException is thrown in the iterator when there's an IOException
+            throw new IOException(e);
         }
         return fileList;
     }
@@ -245,7 +248,7 @@ public class DirectoryProcessor {
         if (filterSubSection == null) {
             return MISSING_SUBSECTION;
         }
-        if (!filterSubSection.equals(FILTER_SUBSECTION_NAME)) {
+        if (!filterSubSection.equals(IterableFilterFile.FILTER_SUBSECTION_NAME)) {
             return BAD_SUBSECTION_NAME;
         }
 
@@ -262,7 +265,7 @@ public class DirectoryProcessor {
         if (orderSubSection == null) {
             return MISSING_SUBSECTION;
         }
-        if (!orderSubSection.equals(ORDER_SUBSECTION_NAME)) {
+        if (!orderSubSection.equals(IterableFilterFile.ORDER_SUBSECTION_NAME)) {
             return BAD_SUBSECTION_NAME;
         }
 
@@ -311,10 +314,10 @@ public class DirectoryProcessor {
                 if (commandBlock[2] == null) {
                     return false;
                 }
-                if (!commandBlock[0].equals(FILTER_SUBSECTION_NAME)) {
+                if (!commandBlock[0].equals(IterableFilterFile.FILTER_SUBSECTION_NAME)) {
                     return false;
                 }
-                if (!commandBlock[2].equals(ORDER_SUBSECTION_NAME)) {
+                if (!commandBlock[2].equals(IterableFilterFile.ORDER_SUBSECTION_NAME)) {
                     return false;
                 }
             }
