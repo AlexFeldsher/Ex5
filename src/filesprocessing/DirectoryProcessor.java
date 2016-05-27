@@ -10,7 +10,7 @@ import java.io.*;
 import java.util.*;
 
 /**
- * Directory processor class. Returns a list of files of a given source directory filtered and sorted
+ * Directory processor class. Prints a list of files of a given source directory filtered and sorted
  * according to a given filter command file.
  */
 public class DirectoryProcessor {
@@ -46,16 +46,18 @@ public class DirectoryProcessor {
     private final String REVERSE_PARAM = "REVERSE";
 
 
+    /**
+     * The main method for DirectoryProcessor. Prints the files from a given source directory
+     * after they are filtered and order according to a given filter file.
+     *
+     * @param args arg1: path to a source directory, arg2: path to a filter file
+     */
     public static void main(String[] args) {
         String sourceDirPath = args[0];
         String filterFilePath = args[1];
         DirectoryProcessor dp;
-        ArrayList<File> fileList;
         try {
             dp = new DirectoryProcessor(filterFilePath, sourceDirPath);
-            /*
-            fileList = dp.processDirectory();
-            */
             dp.processDirectory();
         } catch (IOException e) {
             System.err.println(IO_EXCEPTION_MSG);
@@ -70,13 +72,6 @@ public class DirectoryProcessor {
             System.err.flush();
             return;
         }
-
-        /*
-        for (File file : fileList) {
-            System.out.println(file.getName());
-            System.out.flush();
-        }
-        */
     }
 
     /**
@@ -102,9 +97,8 @@ public class DirectoryProcessor {
     }
 
     /**
-     * Processes the source directory with the filter file.
+     * Processes the source directory with the filter file, and prints there resulting file names
      *
-     * @return array list of filtered and sorted file objects
      * @throws IOException                IO error
      * @throws BadSubSectionNameException filter file has bad subsection name (FILTER/ORDER)
      * @throws BadFilterFileFormatException       filter file has a bad format (missing FILTER or ORDER)
@@ -114,7 +108,6 @@ public class DirectoryProcessor {
         FileReader filterFileReader = new FileReader(FILTER_FILE_PATH);
         BufferedReader bufferedFilterReader = new BufferedReader(filterFileReader);
         IterableFilterFile iterableFilterFile = new IterableFilterFile(bufferedFilterReader);
-        ArrayList<File> fileList = new ArrayList<>();
 
         try {
             for (String[] filterBlock : iterableFilterFile) {
@@ -122,17 +115,11 @@ public class DirectoryProcessor {
                 for (File file : blockFileList) {
                     System.out.println(file.getName());
                 }
-                /*
-                fileList.addAll(blockFileList);
-                */
             }
         } catch (RuntimeException e) {
             // RuntimeException is thrown in the iterator when there's an IOException
             throw new IOException(e);
         }
-        /*
-        return fileList;
-        */
     }
 
     /*

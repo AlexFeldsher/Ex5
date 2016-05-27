@@ -1,3 +1,49 @@
 feld
 
-DRAFT
+=============================
+=      File description     =
+=============================
+README - This file
+DirectoryProcessor - Contains the main method, prints filtered and sorted file name from a given source
+    directory according to a given filter command file.
+IterableFilterFile - Iterable class, iterates over FILTER-OREDER blocks in a filter command file.
+FileFilterFactor - FileFiler factory class that returns a FileFilter according to a given parameter.
+AllFileFilter - Filters all the given files (Accepts all files).
+BetweenFileFilter - Filters the given files that their size is between the values the filter was
+    initialized with.
+ContainsFileFilter - Filters files that their file name contain a string that the filter was
+    initialized with.
+ExecutableFileFilter - Filters files that are executable/not-executable, depending on the state the filter
+    was initialized with.
+FileNameFileFilter - Filters files that have the same file name as a string that the filter was
+    initialized with.
+GreaterThanFileFilter - Filters files that their file sizes is greater than the size the filter was
+    initialized with.
+HiddenFileFilter - Filters files that are hidden/not-hidden, depending on the state the filter was
+    initialized with.
+PrefixFileFilter - Filters files that their file name starts with a string the filter was
+    initialized with.
+SmallerThanFileFilter - Filters files that their size is smaller than than a value the filter was
+    initialized with.
+SuffixFileFilter - Filters files that their file name ends with a string the filter was
+    initialized with.
+WritableFileFilter - Filters files that are writable/not-writable, depending on the state the filter was
+    initialized with.
+FileComparatorFactory - Comparator factory class, that returns a Comparator according to a given parameter.
+FileNameComparator - File name comparator.
+FileSizeComparator - File size comparator.
+FileTypeComparator - File type comparator.
+BadFilterFileFormatException - Exception file to throw when an invalid filter file format
+    is detected.
+BadFilterParameterException - Exception file to throw when a bad parameter is detected in the
+    filter file.
+BadSubSectionNameException - Exception file to throw when a subsection name is invalid.
+
+=============================
+=          Design           =
+=============================
+
+
+=============================
+=  Implementation details   =
+=============================
