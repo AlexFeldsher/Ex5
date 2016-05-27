@@ -42,6 +42,36 @@ BadSubSectionNameException - Exception file to throw when a subsection name is i
 =============================
 =          Design           =
 =============================
+The program was designed with modularity in mind. It fits the 4 fundamental requirements
+1. Decomposability - The complex process of filtering and ordering was broken down less complex
+    sub-problems. And they are all connected by a single class allowing them to be separate and
+    work independently, since the file filters and comparators don't depend on the implementation
+    of the DirectoryProcessor and the DirectoryProcessor doesn't depend on the internal
+    implementation of the file filters and comparators.
+2. Composability - Since the file filters and comparators don't depend on the DirectoryProcessor
+    implementation they could be used for in other systems that either have a different
+    DirectoryProcessor implementation or do completely different things.
+3. Understandability - The modular design I used made sure the structure and the code was
+    easily understandable by a human. In order to understand the DirectoryProcessor implementation
+    it's only needed to understand the general idea of file filter and comparator classes, there's
+    no need to know the internal implementation of those classes. The same goes to understanding
+    how the file filters and comparators work.
+4. Continuity - A small change in the program, like an addition of a new filter or a new comparator
+    will lead to minimal changes in other classes, mainly an addition to the appropriate factory
+    class and an addition of a constant string in the DirectoryProcessor to denote the new
+    filter/comparator.
+It was also designed with the Single-Choice principle in mind. The DirectoryProcessor had to
+support many file filters and comparator, so file filter factory class and a comparator factory
+class were implemented in order to hide the complexity of those classes from the DirectoryProcessor
+The factory classes deal with each filter/comparator requirements so that the DirectoryProcessor
+doesn't have to. That way a change in a filter/comparator only changes the small block of code
+in the appropriate factory file and doesn't affect classes that rely on them.
+The factories are use to decouple the creation of objects from the rest of the program.
+Also the Strategy design pattern was used in this program. In order to process directories
+according to a give filter file that contains different filters and order requirements.
+All the filter classes were made interchangeable with each other and the comparator classes
+are interchangeable with other comparator classes. That way the DirectoryProcessor doesn't need
+to fit itself to the implementation of a individual filter/comparator class.
 
 
 =============================
