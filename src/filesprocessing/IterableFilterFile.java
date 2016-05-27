@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- * Iterable filter file class. Iterates FILTER-ORDER over blocks of 4 cell string arrays.
+ * Iterable filter file class. Iterates FILTER-ORDER over blocks of 4 cell string arrays.<br>
  * Null cell when the line is missing in the filter file.
  */
 public class IterableFilterFile implements Iterable<String[]> {

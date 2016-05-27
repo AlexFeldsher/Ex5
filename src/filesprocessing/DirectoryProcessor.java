@@ -9,6 +9,10 @@ import filesprocessing.filefilters.FileFilterFactory;
 import java.io.*;
 import java.util.*;
 
+/**
+ * Directory processor class. Returns a list of files of a given source directory filtered and sorted
+ * according to a given filter command file.
+ */
 public class DirectoryProcessor {
 
     /* default filter and comparator */
